@@ -5,7 +5,7 @@ import API from "../utils/API";
 import { Link } from "react-router-dom";
 import { Col, Row, Container } from "../components/Grid";
 import { List, ListItem } from "../components/List";
-import { Input, TextArea, FormBtn } from "../components/Form";
+// import { Input, TextArea, FormBtn } from "../components/Form";
 
 class Artists extends Component {
   state = {
@@ -52,20 +52,6 @@ class Artists extends Component {
   render() {
     return (
       <Container fluid>
-        <Row>
-          <Col size="md-12">
-            <Jumbotron>
-              <div className="text-center">
-                <h1>Recommend.me</h1>
-                <p className="lead">This is a simple hero unit, a simple jumbotron-style component for calling extra attention to featured content or information.</p>
-                <hr className="my-4" />
-                <p>It uses utility classes for typography and spacing to space content out within the larger container.</p>
-                <a className="btn btn-success btn-lg" href="/api/spotify" role="button">Connect to Spotify <i className="fa fa-spotify"></i>
-                </a>
-              </div>
-            </Jumbotron>
-          </Col>
-        </Row>
         <Row>
           <Col size="md-12">
             {this.state.artists.length ? (
