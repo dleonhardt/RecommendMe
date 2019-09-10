@@ -1,33 +1,37 @@
 import React, { Component } from "react";
 import Jumbotron from "../components/Jumbotron";
 import { Col, Row, Container } from "../components/Grid";
-import axios from "axios";
-import qs from "query-string";
+import hash from "../utils/hash";
+
+export const authEndpoint = "https://accounts.spotify.com/authorize";
+// Replace with your app's client ID, redirect URI and desired scopes
+const clientId = "85d0a02e55c046448836af208b83323e";
+const redirectUri = "http://localhost:3000/callback";
+const scopes = [
+  "user-read-currently-playing",
+  "user-read-playback-state",
+  "user-top-read"
+];
 
 class Home extends Component {
-  componentDidMount = () => {
-    const callback = qs.parse(this.props.location.search, { ignoreQueryPrefix: true }).code;
+  constructor() {
+    super();
 
-    if(callback) {
-      console.log(callback);
-      const config = {
-        headers: {
-          'Authorization': 'Bearer ' + callback
-        }
-      };
-
-      axios.get("https://api.spotify.com/v1/me", config)
-        .then(res => console.log(res))
-        .catch(err => console.log(err));
-    }
+    this.state = {
+      token: null
+    };
   }
 
-  connectToSpotify = () => {
-    const my_client_id = "85d0a02e55c046448836af208b83323e";
-    const redirect_url = "http://localhost:3000/callback";
+  componentDidMount() {
+    let _token = hash.access_token;
 
-    var scopes = "user-read-private user-read-email";
-    window.location.href = "https://accounts.spotify.com/authorize?response_type=code&client_id=" + my_client_id + (scopes ? "&scope=" + encodeURIComponent(scopes) : "") + "&redirect_uri=" + redirect_url;
+    if(_token) {
+      this.setState({
+        token: _token
+      });
+
+      this.getCurrentlyPlaying(_token);
+    }
   }
 
   render() {
@@ -41,8 +45,14 @@ class Home extends Component {
                 <p className="lead">This is a simple hero unit, a simple jumbotron-style component for calling extra attention to featured content or information.</p>
                 <hr className="my-4" />
                 <p>It uses utility classes for typography and spacing to space content out within the larger container.</p>
-                <button type="button" className="btn btn-success btn-lg" onClick={this.connectToSpotify}>Connect to Spotify <i className="fa fa-spotify"></i>
-                </button>
+                {!this.state.token && (
+                  <a
+                    className="btn btn-success btn-lg"
+                    href={`${authEndpoint}?client_id=${clientId}&redirect_uri=${redirectUri}&scope=${scopes.join("%20")}&response_type=token&show_dialog=true`}
+                  >
+                    Login to Spotify <i className="fa fa-spotify"></i>
+                  </a>
+                )}
               </div>
             </Jumbotron>
           </Col>
