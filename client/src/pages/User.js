@@ -48,15 +48,16 @@ class User extends Component {
 						console.log(this.state.topArtists);
 						console.log("https://api.spotify.com/v1/artists/" + this.state.topArtists[0].id + "/related-artists");
 
-						axios.get("https://api.spotify.com/v1/artists/" + this.state.topArtists[0].id + "/related-artists", { headers })
-							.then(data => {
-								console.log("Related Artists:");
-								this.setState({
-									relatedArtists: data.items
-								});
-		
-								console.log(this.state.relatedArtists);
-							})
+						this.state.topArtists.map(artist => {
+							axios.get("https://api.spotify.com/v1/artists/" + artist.id + "/related-artists", { headers })
+								.then(res => {
+									console.log("Related Artists:");
+									this.setState({
+										relatedArtists: this.state.relatedArtists.concat(res.data.artists)
+									});
+								})
+								.catch(err => console.log(err));
+							});
 					})
 					.catch(err => console.log(err));
 			})
@@ -89,11 +90,11 @@ class User extends Component {
 								<li>{artist.name}</li>
 								))}
 							</ol>
-							{/* <ol>
+							<ol>
 								{this.state.relatedArtists.map(artist => (
 								<li>{artist.name}</li>
 								))}
-							</ol> */}
+							</ol>
 						</Jumbotron>
 					</Col>
 				</Row>
