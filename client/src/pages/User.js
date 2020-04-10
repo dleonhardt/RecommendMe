@@ -1,6 +1,7 @@
 import React, { Component } from "react";
-import Jumbotron from "../components/Jumbotron";
 import { Col, Row, Container } from "../components/Grid";
+import Jumbotron from "../components/Jumbotron";
+import Card from "../components/Card";
 import hash from "../utils/hash";
 import axios from "axios";
 
@@ -13,18 +14,20 @@ class User extends Component {
 			displayName: null,
 			email: null,
 			country: null,
-			topArtists: [],
-			relatedArtists: []
+			recommendedArtists: []
 		};
 
-		this.getCurrentlyPlaying = this.getCurrentlyPlaying.bind(this);
+		this.getRecommendedArtists = this.getRecommendedArtists.bind(this);
 	}
 
-	getCurrentlyPlaying(token) {
+	getRecommendedArtists(token) {
 		// Make a call using the token
 		const headers = {
 			"Authorization": "Bearer " + token
 		};
+
+		let topArtists = [];
+		let relatedArtists = [];
 
 		axios.get("https://api.spotify.com/v1/me/", { headers })
 			.then(res => {
@@ -37,27 +40,85 @@ class User extends Component {
 					country: data.country
 				});
 
-				axios.get("https://api.spotify.com/v1/me/top/artists/?time_range=long_term", { headers })
+				axios.get("https://api.spotify.com/v1/me/top/artists/?time_range=long_term&limit=50", { headers })
 					.then(res => {
 						const data = res.data;
 						console.log("Top Artists:");
-						this.setState({
-							topArtists: data.items
-						});
+						topArtists = data.items
 
-						console.log(this.state.topArtists);
-						console.log("https://api.spotify.com/v1/artists/" + this.state.topArtists[0].id + "/related-artists");
+						const artistArr = topArtists.map(artist => artist.name);
 
-						this.state.topArtists.map(artist => {
+						console.log(artistArr);
+						//console.log("https://api.spotify.com/v1/artists/" + topArtists[0].id + "/related-artists");
+
+						topArtists.map(artist => {
 							axios.get("https://api.spotify.com/v1/artists/" + artist.id + "/related-artists", { headers })
 								.then(res => {
-									console.log("Related Artists:");
-									this.setState({
-										relatedArtists: this.state.relatedArtists.concat(res.data.artists)
-									});
+									//console.log("Related Artists:");
+
+									relatedArtists = relatedArtists.concat(res.data.artists);
+									//console.log(relatedArtists);
+
+									if(relatedArtists.length >= 1000) {
+										console.log("-----------------");
+
+										// check if an element exists in array using a comparer function
+										// comparer : function(currentElement)
+										Array.prototype.inArray = function(comparer) { 
+											for(var i=0; i < this.length; i++) { 
+												if(comparer(this[i])) return true; 
+											}
+											return false; 
+										}; 
+
+										// adds an element to the array if it does not already exist using a comparer 
+										// function
+										Array.prototype.pushIfNotExist = function(element, comparer) { 
+											if (!this.inArray(comparer)) {
+												this.push(element);
+											}
+										};
+										
+										let onlyNewArtists = [];
+
+										for(let i = 0; i < relatedArtists.length; i++) {
+											for(let j = 0; j < artistArr.length; j++) {
+												if(relatedArtists[i].name === artistArr[j]) {
+													console.log("|||||||||||||||||||||||||||");
+													console.log("i: " + relatedArtists[i].name);
+													console.log("j: " + artistArr[j]);
+													console.log("|||||||||||||||||||||||||||");
+													break;
+												}
+
+												if(j === topArtists.length - 1) {
+													onlyNewArtists.push(relatedArtists[i]);
+												}
+											}
+										}
+
+										console.log("***********");
+										console.log(onlyNewArtists);
+										console.log("***********");
+
+										let recommendedArtists = [];
+
+										for(let i = 0; i < onlyNewArtists.length; i++) {
+											recommendedArtists.pushIfNotExist(onlyNewArtists[i], function(e) {
+												return e.name === onlyNewArtists[i].name;
+											});
+										}
+
+										console.log("Recommended Artists:");
+										console.log(recommendedArtists);
+
+										this.setState({
+											recommendedArtists: recommendedArtists
+										});
+									}
 								})
 								.catch(err => console.log(err));
-							});
+						});
 					})
 					.catch(err => console.log(err));
 			})
@@ -72,29 +133,26 @@ class User extends Component {
 				token: _token
 			});
 
-			this.getCurrentlyPlaying(_token);
+			this.getRecommendedArtists(_token);
 		}
 	}
 
 	render() {
 		return (
-			<Container fluid>
+			<Container>
 				<Row>
 					<Col size="md-12">
 						<Jumbotron>
 							<h2>{this.state.displayName}</h2>
 							<p>Email: {this.state.email}</p>
 							<p>Country: {this.state.country}</p>
-							<ol>
-								{this.state.topArtists.map(artist => (
-								<li>{artist.name}</li>
-								))}
-							</ol>
-							<ol>
-								{this.state.relatedArtists.map(artist => (
-								<li>{artist.name}</li>
-								))}
-							</ol>
+							<Row>
+								{this.state.recommendedArtists.map(artist =>
+								<Col size="md-4">
+									<Card name={artist.name} image={artist.images[0].url} />
+								</Col>
+								)}
+							</Row>
 						</Jumbotron>
 					</Col>
 				</Row>

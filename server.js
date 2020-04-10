@@ -1,15 +1,13 @@
 const express = require("express");
 const session = require("express-session");
 const passport = require("passport");
-const swig = require("swig");
 const mongoose = require("mongoose");
-const MongoStore = require("connect-mongo")(session)
 const SpotifyStrategy = require("./lib/passport-spotify/index").Strategy;
+const MongoStore = require("connect-mongo")(session);
+require("dotenv").config();
 
-var consolidate = require("consolidate");
-
-var appKey = "85d0a02e55c046448836af208b83323e";
-var appSecret = "b7796d3955e94abdb336ce0e855195b0";
+var appKey = process.env.SPOTIFY_KEY;
+var appSecret = process.env.SPOTIFY_SECRET;
 
 // Passport session setup.
 //   To support persistent login sessions, Passport needs to be able to
@@ -64,11 +62,11 @@ if (process.env.NODE_ENV === "production") {
 
 // Routes for API and User
 const routes = require("./routes");
-const user = require('./routes/user')
+const user = require("./routes/user");
 
-app.use(routes);
+app.use(routes, user);
 
-app.use(session({ secret: "keyboard cat", resave: true, saveUninitialized: true }));
+app.use(session({ secret: process.env.SESSION_SECRET, resave: true, saveUninitialized: true }));
 // Initialize Passport!  Also use passport.session() middleware, to support
 // persistent login sessions (recommended).
 app.use(passport.initialize());

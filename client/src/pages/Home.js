@@ -7,11 +7,7 @@ export const authEndpoint = "https://accounts.spotify.com/authorize";
 // Replace with your app's client ID, redirect URI and desired scopes
 const clientId = "85d0a02e55c046448836af208b83323e";
 const redirectUri = "http://localhost:3000/callback";
-const scopes = [
-  "user-read-currently-playing",
-  "user-read-playback-state",
-  "user-top-read"
-];
+const scopes = ["user-top-read"];
 
 class Home extends Component {
   constructor() {
@@ -29,8 +25,6 @@ class Home extends Component {
       this.setState({
         token: _token
       });
-
-      this.getCurrentlyPlaying(_token);
     }
   }
 

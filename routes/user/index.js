@@ -1,5 +1,6 @@
 const router = require("express").Router();
-const passport = require("../../lib/passport-spotify");
+const passport = require("passport");
+const passportSpotify = require("../../lib/passport-spotify");
 
 router.get("/", (req, res, next) => {
     console.log(req.user)
@@ -28,11 +29,11 @@ router.get("/auth/spotify", passport.authenticate("spotify", {
 //   request. If authentication fails, the user will be redirected back to the
 //   login page. Otherwise, the primary route function function will be called,
 //   which, in this example, will redirect the user to the home page.
-app.get("/callback", passport.authenticate("spotify", { failureRedirect: "/login" }), function(req, res) {
+router.get("/callback", passport.authenticate("spotify", { failureRedirect: "/login" }), function(req, res) {
     res.redirect("/");
 });
 
-app.get("/logout", function(req, res) {
+router.get("/logout", function(req, res) {
     req.logout();
     res.redirect("/");
 });
