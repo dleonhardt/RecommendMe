@@ -8,12 +8,26 @@
 	cursor: pointer;
 }
 
+.card .card-bg {
+	position: absolute;
+	width: 326px;
+	height: 326px;
+	background-color: #000;
+	opacity: 0.2;
+	display: block;
+}
+
+.card:hover > .card-bg {
+	display: none;
+}
+
 .card .card-title {
 	text-align: center;
 	width: 100%;
 	margin: 50% 0;
 	position: absolute;
 	z-index: 1;
+	text-shadow: 2px 1px #333;
 }
 
 .card > img {
@@ -22,7 +36,7 @@
 	height: 326px;
 }
 
-.card > img:hover {
+.card:hover > img {
 	transform: scale(1.05);
 	transition: all 0.5s ease;
 }
