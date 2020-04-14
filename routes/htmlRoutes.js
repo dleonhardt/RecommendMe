@@ -14,17 +14,14 @@ if(!process.env.NODE_ENV || process.env.NODE_ENV === "development") {
 
 // we need to define the routes necessary to make passport-spotify work
 // here's the URL users need to visit to initiate the spotify login
-router.get("/auth/spotify", passport.authenticate("spotify", {
-    scope: ["user-read-private", "user-read-email", "user-top-read", "user-modify-playback-state"],
-    showDialog: true
-}), (req, res) => {
+router.get("/auth/spotify", passport.authenticate("spotify"), (req, res) => {
 	res.end();
 });
 
 // here's the URL spotify will call back to finish logging them into your site
 router.get("/auth/spotify/callback", passport.authenticate("spotify", {
-	successRedirect: "/callback", // tell it where to go if the log in successfully
-	failureRedirect: "/auth/failed" // tell it where to go if they couldn't log in
+	successRedirect: `${baseUrl}/callback`, // tell it where to go if the log in successfully
+	failureRedirect: `${baseUrl}/auth/failed` // tell it where to go if they couldn't log in
 }));
 
 // Serve up static assets (usually on heroku)
