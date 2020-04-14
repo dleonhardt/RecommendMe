@@ -1,29 +1,31 @@
-import React, { Component } from "react";
+import React, { useState, useEffect } from "react";
 import { Col, Row, Container } from "../components/Grid";
 import Jumbotron from "../components/Jumbotron";
 import Card from "../components/Card";
 import hash from "../utils/hash";
 import axios from "axios";
 
-class User extends Component {
-	constructor() {
-		super();
+function User() {
+	const [token, setToken] = useState("");
+	const [recommendedArtists, setRecommended] = useState("");
 
-		this.state = {
-			token: null,
-			displayName: null,
-			email: null,
-			country: null,
-			recommendedArtists: []
-		};
+	useEffect(() => {
+		if(hash.access_token) {
+			setToken(hash.access_token);
 
-		this.getRecommendedArtists = this.getRecommendedArtists.bind(this);
+			getRecommendedArtists(hash.access_token);
+		}
+	}, [token]);
+
+	const listenToArtist = artistId => {
+		console.log("Artist ID:");
+		console.log(artistId);
 	}
 
-	getRecommendedArtists(token) {
+	const getRecommendedArtists = accessToken => {
 		// Make a call using the token
 		const headers = {
-			"Authorization": "Bearer " + token
+			"Authorization": "Bearer " + accessToken
 		};
 
 		let topArtists = [];
@@ -34,17 +36,12 @@ class User extends Component {
 				const data = res.data;
 				console.log("User:");
 				console.log(data);
-				this.setState({
-					displayName: data.display_name,
-					email: data.email,
-					country: data.country
-				});
 
 				axios.get("https://api.spotify.com/v1/me/top/artists/?time_range=long_term&limit=50", { headers })
 					.then(res => {
 						const data = res.data;
 						console.log("Top Artists:");
-						topArtists = data.items
+						topArtists = data.items;
 
 						const artistArr = topArtists.map(artist => artist.name);
 
@@ -61,6 +58,7 @@ class User extends Component {
 
 									if(relatedArtists.length >= 1000) {
 										console.log("-----------------");
+										console.log(relatedArtists);
 
 										// check if an element exists in array using a comparer function
 										// comparer : function(currentElement)
@@ -112,9 +110,7 @@ class User extends Component {
 										console.log("Recommended Artists:");
 										console.log(recommendedArtists);
 
-										this.setState({
-											recommendedArtists: recommendedArtists
-										});
+										setRecommended(recommendedArtists);
 									}
 								})
 								.catch(err => console.log(err));
@@ -125,40 +121,28 @@ class User extends Component {
 			.catch(err => console.log(err));
 	}
 
-	componentDidMount() {
-		let _token = hash.access_token;
-
-		if (_token) {
-			this.setState({
-				token: _token
-			});
-
-			this.getRecommendedArtists(_token);
-		}
-	}
-
-	render() {
-		return (
-			<Container>
-				<Row>
-					<Col size="md-12">
-						<Jumbotron>
-							<h2>{this.state.displayName}</h2>
-							<p>Email: {this.state.email}</p>
-							<p>Country: {this.state.country}</p>
-							<Row>
-								{this.state.recommendedArtists.map(artist =>
-								<Col size="md-4">
-									<Card name={artist.name} image={artist.images[0].url} />
-								</Col>
-								)}
-							</Row>
-						</Jumbotron>
-					</Col>
-				</Row>
-			</Container>
-		);
-	}
+	return (
+		<Container>
+			<Row>
+				<Col size="md-12">
+					<Jumbotron>
+						<Row>
+							{recommendedArtists.length > 0 && recommendedArtists.map(artist =>
+							<Col size="md-4">
+								<Card
+									id={artist.id}
+									name={artist.name}
+									image={artist.images[0].url}
+									listenToArtist={listenToArtist}
+								/>
+							</Col>
+							)}
+						</Row>
+					</Jumbotron>
+				</Col>
+			</Row>
+		</Container>
+	);
 }
 
 export default User;

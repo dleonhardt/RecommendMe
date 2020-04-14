@@ -28,6 +28,7 @@
 	position: absolute;
 	z-index: 1;
 	text-shadow: 2px 1px #333;
+	text-transform: uppercase;
 }
 
 .card > img {

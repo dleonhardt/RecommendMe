@@ -3,7 +3,7 @@ import axios from "axios";
 export default {
   // Connect to Spotify
   connect: function() {
-    return axios.post("/api/connect");
+    return axios.get("/auth/spotify");
   },
   // Gets all artists
   getArtists: function() {

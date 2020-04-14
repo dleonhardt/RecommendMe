@@ -1,23 +1,21 @@
-import React, { Component } from "react";
-import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
+import React from "react";
+import { BrowserRouter, Route, Switch } from "react-router-dom";
 import Nav from "./components/Nav";
 import Home from "./pages/Home";
 import User from "./pages/User";
 import "./style.css";
 
-class App extends Component {
-  render() {
+function App() {
     return (
-      <Router>
-        <div>
+      <BrowserRouter>
+        <>
           <Nav />
           <Switch>
               <Route exact path="/" component={Home} />
               <Route path="/callback" component={User} />
           </Switch>
-        </div>
-      </Router>
+        </>
+      </BrowserRouter>
     );
-  }
 }
 export default App;
