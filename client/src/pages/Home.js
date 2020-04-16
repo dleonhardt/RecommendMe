@@ -1,9 +1,7 @@
 import React, { useState, useEffect } from "react";
 import Jumbotron from "../components/Jumbotron";
 import { Col, Row, Container } from "../components/Grid";
-import { Redirect } from "react-router-dom";
 import hash from "../utils/hash";
-import API from "../utils/API";
 
 function Home() {
   const [token, setToken] = useState("");
@@ -23,12 +21,6 @@ function Home() {
     }
   });
 
-  // const loginSpotify = () => {
-  //   API.connect()
-  //     .then(res => console.log(res))
-  //     .catch(e => console.log(e));
-  // }
-
   return (
     <Container fluid>
       <Row>
@@ -37,12 +29,7 @@ function Home() {
             <div className="text-center">
               <h1>Recommend.me</h1>
               <br />
-              {!token ? (
-                // <button className="btn btn-success btn-lg" onClick={loginSpotify}>Login to Spotify <i className="fa fa-spotify"></i></button>
-                <a className="btn btn-success btn-lg" href={`${baseUrl}/auth/spotify`}>Login to Spotify <i className="fa fa-spotify"></i></a>
-              ) : (
-                <Redirect to="/callback" />
-              )}
+              <a className="btn btn-success btn-lg" href={`${baseUrl}/auth/spotify`}>Login to Spotify <i className="fa fa-spotify"></i></a>
             </div>
           </Jumbotron>
         </Col>

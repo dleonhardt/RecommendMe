@@ -6,6 +6,7 @@ function Nav() {
       <a className="navbar-brand" href="/">
         Recommend.Me
       </a>
+      <a href="/logout">Logout</a>
     </nav>
   );
 }

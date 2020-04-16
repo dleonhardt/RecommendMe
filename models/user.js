@@ -5,6 +5,15 @@ const bcrypt = require("bcrypt");
 const userSchema = new Schema({
     username: {
         type: String,
+        required: true,
+        unique: true
+    },
+    accessToken: {
+        type: String,
+        required: true
+    },
+    refreshToken: {
+        type: String,
         required: true
     },
     firstName: {
@@ -12,7 +21,7 @@ const userSchema = new Schema({
     },
     lastName: {
         type: String
-    },
+    }
 });
 
 // This pre "save" handler will be called before each time the user is saved.
