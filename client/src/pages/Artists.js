@@ -1,13 +1,16 @@
 import React, { useState, useEffect } from "react";
 import { Col, Row, Container } from "../components/Grid";
 import Jumbotron from "../components/Jumbotron";
-import Card from "../components/Card";
+import Player from "../components/Player";
+import ArtistCard from "../components/ArtistCard";
 import queryString from "query-string";
 import API from "../utils/API";
 import axios from "axios";
 
 function Artists(props) {
 	const [recommendedArtists, setRecommended] = useState("");
+	const [isPlaying, setPlaying] = useState(true);
+	const [artist, setArtist] = useState({});
 
 	useEffect(() => {
 		console.log(props.user)
@@ -24,9 +27,39 @@ function Artists(props) {
 		}
 	}, [props.user]);
 
-	const listenToArtist = artistId => {
-		console.log("Artist ID:");
-		console.log(artistId);
+	useEffect(() => {
+		console.log(artist);
+	}, [artist])
+
+	const listenToArtist = artistClicked => {
+		let accessToken = props.user.accessToken;
+
+		// Make a call using the token
+		const headers = {
+			"Authorization": "Bearer " + accessToken
+		};
+
+		console.log("Artist:");
+		console.log(artistClicked);
+
+		
+
+		axios.get(`https://api.spotify.com/v1/artists/${artistClicked.id}/top-tracks?country=SE`, { headers })
+			.then(res => {
+				console.log(res.data.tracks);
+
+				setArtist({
+					id: artistClicked.id,
+					name: artistClicked.name,
+					image: res.data.tracks[0].album.images[0].url,
+					track: res.data.tracks[0].name
+				});
+
+				// axios.put("https://api.spotify.com/v1/me/player/play", { headers })
+				// .then(res => {
+					
+				// });
+			});
 	}
 
 	const getRecommendedArtists = accessToken => {
@@ -50,13 +83,13 @@ function Artists(props) {
 						console.log("Top Artists:");
 						topArtists = data.items;
 
-						const artistArr = topArtists.map(artist => artist.name);
+						const artistArr = topArtists.map(topArtist => topArtist.name);
 
 						console.log(artistArr);
 						//console.log("https://api.spotify.com/v1/artists/" + topArtists[0].id + "/related-artists");
 
-						topArtists.map(artist => {
-							axios.get("https://api.spotify.com/v1/artists/" + artist.id + "/related-artists", { headers })
+						topArtists.map(topArtist => {
+							axios.get("https://api.spotify.com/v1/artists/" + topArtist.id + "/related-artists", { headers })
 								.then(res => {
 									//console.log("Related Artists:");
 
@@ -128,23 +161,33 @@ function Artists(props) {
 			.catch(err => console.log(err));
 	}
 
+	const backToArtists = () => {
+		console.log("Back to artists");
+		setArtist({});
+	}
+
 	return (
 		<Container>
+			<button className="btn btn-primary">Rescan <i class="fa fa-refresh" aria-hidden="true"></i></button>
 			<Row>
 				<Col size="md-12">
 					<Jumbotron>
+					{ Object.keys(artist).length === 0 ?
 						<Row>
-							{recommendedArtists.length > 0 && recommendedArtists.map(artist =>
-							<Col size="md-4">
-								<Card
-									id={artist.id}
-									name={artist.name}
-									image={artist.images[0].url}
+							{recommendedArtists.length > 0 && recommendedArtists.map(item =>
+							<Col key={item.id} size="md-4">
+								<ArtistCard
+									id={item.id}
+									name={item.name}
+									image={item.images[0].url}
 									listenToArtist={listenToArtist}
 								/>
 							</Col>
 							)}
 						</Row>
+					:
+					<Player id={artist.id} artist={artist.name} track={artist.track} image={artist.image} isPlaying={isPlaying} backToArtists={backToArtists} />
+					}
 					</Jumbotron>
 				</Col>
 			</Row>

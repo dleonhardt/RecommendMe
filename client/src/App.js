@@ -4,7 +4,8 @@ import Nav from "./components/Nav";
 import Home from "./pages/Home";
 import Artists from "./pages/Artists";
 import API from "./utils/API";
-import "./style.css";
+// import "./styles/base.css";
+import "./styles/app.css";
 
 function App() {
 	const [user, setUser] = useState({});
@@ -30,8 +31,8 @@ function App() {
 				<Switch>
 					<Redirect from="/logout" to="/" />
 					<Route exact path="/" component={Home} />
-					<Route exact path="/callback" render={() => <Artists user={user} getUser={getUser} /> } />
-					<Route exact path="/auth/spotify/callback"  render={() => <Artists user={user} getUser={getUser} /> } />
+					<Route exact path="/callback" render={() => <Artists user={user} getUser={getUser} />} />
+					<Route exact path="/auth/spotify/callback" render={() => <Artists user={user} getUser={getUser} />} />
 				</Switch>
 			</>
 		</Router>
