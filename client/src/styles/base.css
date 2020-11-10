@@ -4,32 +4,21 @@
  * This is the main stylesheet. Anything global to all pages will exist here.
  */
 
-/* -----------------------------------------------
- * Container
- * ----------------------------------------------- */
- .container {
-	position: relative;
-	width: 100%;
-	max-width: 1140px;
-	margin: 0 auto;
-	padding: 0 2rem;
-	box-sizing: border-box;
+ html, body {
+	height: 100%;
 }
 
 /* -----------------------------------------------
  * Typography
  * ----------------------------------------------- */
-html {
-	font-size: 62.5%;
-}
 
 body {
-	background-color: #fff;
+	background-color: #222;
 	font-size: 1.5em;
-	line-height: 1.6;
+	line-height: 1.5;
 	font-weight: 400;
-	font-family: "HelveticaNeue", "Helvetica Neue", Helvetica, Arial, sans-serif;
-	color: #212121;
+	font-family: "Lato", Helvetica, Arial, sans-serif;
+	color: #fff;
 	letter-spacing: 0em;
 }
 
@@ -117,39 +106,7 @@ a {
 a:hover, a:active {
 	color: #2568ab;
 	text-decoration: underline;
-}
-
-/* -----------------------------------------------
- * Buttons
- * ----------------------------------------------- */
-.button, button, input[type="submit"], input[type="reset"], input[type="button"] {
-	color: #fff;
-	background-color: #888;
-	outline: 0;
-	display: inline-block;
-	height: 38px;
-	padding: 0 30px;
-	text-align: center;
-	font-size: 11px;
-	font-weight: 600;
-	line-height: 38px;
-	letter-spacing: .1rem;
-	text-transform: uppercase;
-	text-decoration: none;
-	white-space: nowrap;
-	border-radius: 4px;
-	border: 1px solid #bbb;
-	cursor: pointer;
-	box-sizing: border-box;
-}
-
-.button:hover, button:hover, input[type="submit"]:hover, input[type="reset"]:hover, input[type="button"]:hover, .button:focus, button:focus, input[type="submit"]:focus, input[type="reset"]:focus, input[type="button"]:focus {
-	color: #555;
-	border-color: #888;
-	background-color: transparent;
-	outline: 0;
-}
-  
+}  
   
 /* -----------------------------------------------
  * Forms

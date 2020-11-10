@@ -1,27 +1,37 @@
-.card {
-	position: relative;
+.artist-section {
+	display: flex;
+	flex-wrap: wrap;
+	margin: 0 auto;
+}
+
+.artist {
+	position: relative !important;
 	-webkit-box-shadow: 0px 3px 10px 0px rgba(0,0,0,0.75);
 	-moz-box-shadow: 0px 3px 10px 0px rgba(0,0,0,0.75);
 	box-shadow: 0px 3px 10px 0px rgba(0,0,0,0.75);
 	text-align: left;
-	margin-bottom: 2em;
+	margin: 1.81em;
 	cursor: pointer;
+	max-width: 326px;
+	max-height: 326px;
+	width: 100%;
 }
 
-.card .card-bg {
+.artist .artist-bg {
 	position: absolute;
-	width: 326px;
+	max-width: 326px;
+	width: 100%;
 	height: 326px;
 	background-color: #000;
 	opacity: 0.2;
 	display: block;
 }
 
-.card:hover > .card-bg {
+.artist:hover > .artist-bg {
 	display: none;
 }
 
-.card .card-title {
+.artist .artist-name {
 	text-align: center;
 	width: 100%;
 	margin: 50% 0;
@@ -31,20 +41,20 @@
 	text-transform: uppercase;
 }
 
-.card > img {
+.artist > img {
 	object-fit: cover;
-	width: 326px;
+	min-width: 326px;
 	height: 326px;
 }
 
-.card:hover > img {
+.artist:hover > img {
 	transform: scale(1.05);
 	transition: all 0.5s ease;
 }
 
-.card{
-	position:absolute;
-	bottom:-50px;;
+/* .artist{
+	position: absolute;
+	bottom:-50px;
 	animation-name:slideup;
 	animation-delay:0.5s;
 	animation-duration:0.8s;
@@ -59,4 +69,4 @@
 	100% {
 		bottom: 0;
 	}
-}
+} */
