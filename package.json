@@ -9,19 +9,18 @@
     "start:dev": "concurrently \"nodemon --ignore 'client/*'\" \"npm run client\"",
     "client": "cd client && npm run start",
     "install": "cd client && npm install",
-    "build": "cd client && npm run build",
-    "heroku-postbuild": "npm run build"
+    "build": "cd client && npm run build"
   },
-  "author": "",
+  "author": "dleonhardt <dleonhardt01@gmail.com>",
   "license": "ISC",
   "devDependencies": {
-    "concurrently": "^4.1.0",
+    "concurrently": "^7.1.0",
     "morgan": "^1.10.0",
-    "nodemon": "^1.19.4"
+    "nodemon": "^2.0.16"
   },
   "dependencies": {
-    "axios": "^0.18.0",
-    "bcrypt": "^4.0.1",
+    "axios": "^0.27.2",
+    "bcrypt": "^5.0.1",
     "connect-mongo": "^3.2.0",
     "dotenv": "^8.2.0",
     "express": "^4.16.3",
@@ -31,5 +30,6 @@
     "passport": "^0.4.1",
     "passport-spotify": "^1.1.0",
     "query-string": "^6.13.6"
-  }
+  },
+  "repository": "https://github.com/dleonhardt/recommendme.git"
 }

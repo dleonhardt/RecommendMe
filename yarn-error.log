@@ -1,0 +1,60 @@
+Arguments: 
+  /usr/local/bin/node /usr/local/bin/yarn
+
+PATH: 
+  /usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/Library/Frameworks/Mono.framework/Versions/Current/Commands:/usr/local/mongodb/bin
+
+Yarn version: 
+  1.22.18
+
+Node version: 
+  16.15.0
+
+Platform: 
+  darwin x64
+
+Trace: 
+  Error: EACCES: permission denied, mkdir '/Users/dleonhardt/Documents/Websites/recommendme/node_modules/passport-oauth2/.github'
+
+npm manifest: 
+  {
+    "name": "recommend-me",
+    "version": "1.0.0",
+    "description": "",
+    "main": "server.js",
+    "scripts": {
+      "start": "if-env NODE_ENV=production && npm run start:prod || npm run start:dev",
+      "start:prod": "node server.js",
+      "start:dev": "concurrently \"nodemon --ignore 'client/*'\" \"npm run client\"",
+      "client": "cd client && npm run start",
+      "install": "cd client && npm install",
+      "build": "cd client && npm run build"
+    },
+    "author": "dleonhardt <dleonhardt01@gmail.com>",
+    "license": "ISC",
+    "devDependencies": {
+      "concurrently": "^4.1.0",
+      "morgan": "^1.10.0",
+      "nodemon": "^1.19.4"
+    },
+    "dependencies": {
+      "axios": "^0.18.0",
+      "bcrypt": "^4.0.1",
+      "connect-mongo": "^3.2.0",
+      "dotenv": "^8.2.0",
+      "express": "^4.16.3",
+      "express-session": "^1.17.1",
+      "if-env": "^1.0.4",
+      "mongoose": "^5.10.11",
+      "passport": "^0.4.1",
+      "passport-spotify": "^1.1.0",
+      "query-string": "^6.13.6"
+    },
+    "repository": "https://github.com/dleonhardt/recommendme.git"
+  }
+
+yarn manifest: 
+  No manifest
+
+Lockfile: 
+  No lockfile
