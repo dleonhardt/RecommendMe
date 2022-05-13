@@ -14,19 +14,18 @@ app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 
 // Connect to the Mongo DB
-mongoose.connect(process.env.MONGODB_URI || "mongodb://localhost/recommendme", require("./config/mongooseConfig"));
+mongoose.connect(process.env.MONGODB_URI || "mongodb://localhost/recommendme");
 
 // Routes
 app.use(require("./routes"));
 
-app.use((error, req, res, next) => {
+app.use((error, _req, res) => {
   console.error(error);
+
   res.status(500).json({
     error
   })
 });
 
 // Start the API server
-app.listen(PORT, function () {
-  console.log(`🌎  ==> API Server now listening on PORT ${PORT}!`);
-});
+app.listen(PORT, () => console.log(`🌎  ==> API Server now listening on PORT ${PORT}!`));
