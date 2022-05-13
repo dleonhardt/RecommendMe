@@ -1,9 +1,12 @@
 # dependencies
 node_modules
 
-# production
-/client/build
+# logs
+logs
+*.log
 
 # misc
+*.code-workspace
 .DS_Store
 .env
+.vscode/settings.json=
